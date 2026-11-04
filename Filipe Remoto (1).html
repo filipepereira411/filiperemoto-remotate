@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Filipe Remoto</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mut:#667085;--bd:#e3e6ea;--ac:#2563eb;--ac2:#0f766e;--ok:#16a34a;--hd:#eef1f5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111418;--card:#1a1f26;--tx:#e8ebef;--mut:#98a2b3;--bd:#2b323b;--ac:#60a5fa;--ac2:#2dd4bf;--ok:#4ade80;--hd:#222932;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111418;--card:#1a1f26;--tx:#e8ebef;--mut:#98a2b3;--bd:#2b323b;--ac:#60a5fa;--ac2:#2dd4bf;--ok:#4ade80;--hd:#222932;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.4rem;margin:0}h2{font-size:1.05rem;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+.narrow{max-width:380px;margin:8vh auto 0;display:grid;gap:10px;padding:18px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.top{justify-content:space-between;margin-bottom:14px}
+.row input,.row select{flex:1 1 150px}
+input,select,button,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
+textarea{width:100%;resize:vertical}
+button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+a{color:var(--ac)}
+.hero{text-align:center;max-width:540px;margin:9vh auto 0}
+.hero h1{font-size:2rem;margin-bottom:6px}.hero p{color:var(--mut);margin:0 0 26px}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:420px){.big{grid-template-columns:1fr}}
+.big button{padding:26px 14px;font-size:1.1rem;font-weight:600;border-radius:14px;background:var(--card);transition:transform .12s,border-color .12s}
+.big button:hover{transform:translateY(-2px)}
+.big button small{display:block;color:var(--mut);font-weight:400;font-size:.85rem;margin-top:4px}
+.big .ico{font-size:2rem;display:block;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px}
+.stat b{font-size:1.5rem;display:block;color:var(--ac)}.stat span{color:var(--mut);font-size:.82rem}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-bottom:14px}
+.card .wrap{margin:10px 0 0;background:none}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)}
+th{background:var(--hd);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+tr:last-child td{border-bottom:0}
+.ip{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ac)}
+.acts{display:flex;gap:5px;flex-wrap:wrap}
+.acts button,.acts a{font-size:.8rem;padding:4px 8px;text-decoration:none;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px}
+.acts button.p{color:#fff}
+.msg{color:var(--ok);min-height:1.2em;font-size:.88rem;margin-top:6px}.err{color:#dc2626}
+.mut{color:var(--mut);font-size:.82rem}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chips button{font-size:.8rem;border-radius:99px;padding:4px 10px}
+#ians{white-space:pre-wrap;margin-top:10px;padding:10px 12px;border:1px dashed var(--bd);border-radius:8px;min-height:44px}
+</style>
+</head>
+<body>
+<main>
+
+<div id="home" class="hero">
+  <h1>Filipe Remoto</h1>
+  <p>Gestão e ligação remota a dispositivos, com assistente IA. Escolhe a tua área.</p>
+  <div class="big">
+    <button data-mode="admin"><span class="ico">🛠️</span>Admin<small>Gerir dispositivos e clientes</small></button>
+    <button data-mode="cliente"><span class="ico">👤</span>Clientes<small>Aceder aos meus dispositivos</small></button>
+  </div>
+</div>
+
+<div id="login" class="card narrow" hidden>
+  <h1 id="lt">Entrar</h1>
+  <input id="lu" placeholder="Utilizador" autocomplete="username">
+  <input id="lp" type="password" placeholder="Senha" autocomplete="current-password">
+  <button class="p" id="lb">Entrar</button>
+  <div class="row"><a href="#" id="fg">Esqueci a senha</a><a href="#" id="rg">Criar conta de cliente</a><a href="#" id="b0">Início</a></div>
+  <div id="lm" class="msg"></div>
+</div>
+
+<div id="reg" class="card narrow" hidden>
+  <h1>Criar conta</h1>
+  <input id="ru" placeholder="Utilizador (letras, números, . _ -)">
+  <input id="rp" type="password" placeholder="Senha (mín. 4 caracteres)">
+  <button class="p" id="rb">Criar conta de cliente</button>
+  <a href="#" id="rk">Voltar ao login</a>
+  <div id="rm" class="msg"></div>
+</div>
+
+<div id="forgot" class="card narrow" hidden>
+  <h1>Recuperar senha</h1>
+  <input id="fu" placeholder="Utilizador">
+  <input id="fc" type="password" placeholder="Código de recuperação">
+  <input id="fn" type="password" placeholder="Nova senha (mín. 4 caracteres)">
+  <button class="p" id="fb">Guardar nova senha</button>
+  <a href="#" id="bk">Voltar ao login</a>
+  <div id="fm" class="msg"></div>
+  <p class="mut">Clientes sem o código: pede ao administrador para repor a tua senha.</p>
+</div>
+
+<div id="app" hidden>
+  <div class="row top">
+    <h1 id="ht">Dispositivos</h1>
+    <div class="row"><span class="mut" id="who"></span><button id="adm" hidden>Painel admin</button><button id="out">Sair</button></div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="row" style="margin-bottom:12px"><input id="q" placeholder="Pesquisar por nome ou IP"></div>
+  <div id="am" class="msg"></div>
+  <div class="wrap"><table>
+    <thead><tr><th>Nome</th><th>IP</th><th>Tipo</th><th>Ações</th></tr></thead>
+    <tbody id="lista"></tbody>
+  </table></div>
+
+  <div class="card" id="fx" hidden>
+    <h2 id="fxt"></h2>
+    <textarea id="fxa" rows="9" readonly></textarea>
+    <div class="row" style="margin-top:8px"><button class="p" id="fxc">Copiar</button><button id="fxs">Guardar como .txt</button><button id="fxx">Fechar</button></div>
+    <p class="mut">Cola o texto no Bloco de Notas e grava com a extensão indicada (.rdp ou .bat). Se guardares o .txt, basta mudar a extensão.</p>
+  </div>
+
+  <div class="card" id="ia">
+    <h2>Assistente IA</h2>
+    <div class="chips" id="chips">
+      <button data-q="A ligação RDP falha. Que verificações devo fazer, por ordem?">RDP falha</button>
+      <button data-q="Como ativo a ajuda remota em modo shadow num PC Windows Pro?">Ajuda remota (shadow)</button>
+      <button data-q="Como descubro o IP e o nome de um PC Windows?">Descobrir IP</button>
+      <button data-q="Como ativo o Ambiente de Trabalho Remoto e abro a firewall no PC de destino?">Ativar RDP</button>
+    </div>
+    <div class="row"><input id="iq" placeholder="Pergunta sobre ligações remotas..."><button class="p" id="ib">Perguntar</button></div>
+    <div id="ians" class="mut">As respostas aparecem aqui. O assistente conhece os dispositivos que vês nesta lista.</div>
+  </div>
+</div>
+
+<div id="admin" hidden>
+  <div class="row top"><h1>Painel Admin</h1><div class="row"><span class="mut" id="awho"></span><button id="toapp">Dispositivos</button><button id="aout">Sair</button></div></div>
+  <div class="card">
+    <h2>Dispositivos</h2>
+    <div class="row">
+      <input id="nome" placeholder="Nome (ex.: PC Secretaria)">
+      <input id="ip" placeholder="IP ou nome (ex.: 192.168.1.10)">
+      <input id="user" placeholder="Utilizador remoto (opcional)">
+      <select id="dono"><option value="">Sem cliente</option></select>
+      <select id="tipo"><option>PC Windows</option><option>Linux / Servidor</option><option>Router / Switch</option><option>Câmara</option><option>Impressora</option><option>Outro</option></select>
+      <button class="p" id="add">Adicionar</button>
+    </div>
+    <div id="dm" class="msg"></div>
+    <div class="wrap"><table><thead><tr><th>Nome</th><th>IP</th><th>Tipo</th><th>Utilizador</th><th>Cliente</th><th></th></tr></thead><tbody id="alista"></tbody></table></div>
+  </div>
+  <div class="card">
+    <h2>Clientes</h2>
+    <div class="row"><input id="nu" placeholder="Novo cliente"><input id="np" type="password" placeholder="Senha (mín. 4 caracteres)"><button class="p" id="addu">Criar</button></div>
+    <div id="um" class="msg"></div>
+    <div class="wrap"><table><thead><tr><th>Utilizador</th><th>Perfil</th><th></th></tr></thead><tbody id="users"></tbody></table></div>
+  </div>
+  <div class="card">
+    <h2>Segurança</h2>
+    <div class="row"><input id="ps" type="password" placeholder="Nova senha do admin"><button id="bps">Alterar senha</button></div>
+    <div class="row" style="margin-top:8px"><input id="rc" type="password" placeholder="Novo código de recuperação"><button id="brc">Alterar código</button></div>
+    <div id="sm" class="msg"></div>
+    <p class="mut">O código de recuperação é pedido em “Esqueci a senha”. Por defeito é <b>admin</b>: muda-o.</p>
+  </div>
+</div>
+
+</main>
+<script>
+(async function(){
+var U="gip_users",S="gip_sess",D="gestor_ip_devices";
+var DEF=[{nome:"DESKTOP-FSK7C12",ip:"192.168.1.88",tipo:"PC Windows",user:"JCPereira"},{nome:"RoutherS12",ip:"192.168.0.1",tipo:"Router / Switch"},{nome:"Aluno",ip:"192.168.0.100",tipo:"PC Windows",user:"Aluno"}];
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+async function H(t){try{var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("gip:"+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}catch(e){var h=5381;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return "x"+h}}
+function ls(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lw(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+var u=null;try{u=JSON.parse(ls(U))}catch(e){}
+if(!u||!u.users){u={users:{admin:{h:await H("admin"),role:"admin"}},rec:await H("admin")};lw(U,JSON.stringify(u))}
+function saveU(){lw(U,JSON.stringify(u))}
+function devs(){try{var r=ls(D);if(r!==null){var a=JSON.parse(r);if(Array.isArray(a))return a}}catch(e){}return DEF.slice()}
+function saveD(a){lw(D,JSON.stringify(a))}
+function msg(id,t,bad){var m=$(id);m.textContent=t;m.className="msg"+(bad?" err":"")}
+function okHost(v){return /^[A-Za-z0-9][A-Za-z0-9.-]{0,251}$/.test(v)&&v.indexOf("..")<0}
+var cur=null,mode=null;
+function isAdmin(){return !!u.users[cur]&&u.users[cur].role==="admin"}
+try{var s=JSON.parse(ls(S));if(s&&u.users[s.n]&&(u.users[s.n].role==="admin")===(s.m==="admin")){cur=s.n;mode=s.m}}catch(e){}
+
+function view(n){
+  ["home","login","reg","forgot","app","admin"].forEach(function(i){$(i).hidden=i!==n});
+  if(n==="login"){$("lt").textContent=mode==="admin"?"Administração":"Área de Clientes";$("rg").hidden=mode==="admin"}
+  if(n==="app")renderApp();
+  if(n==="admin")renderAdmin();
+  window.scrollTo(0,0);
+}
+view(cur?(mode==="admin"?"admin":"app"):"home");
+
+document.querySelectorAll("[data-mode]").forEach(function(b){b.onclick=function(){mode=b.dataset.mode;view("login")}});
+$("b0").onclick=function(e){e.preventDefault();view("home")};
+$("fg").onclick=function(e){e.preventDefault();view("forgot")};
+$("rg").onclick=function(e){e.preventDefault();view("reg")};
+$("rk").onclick=function(e){e.preventDefault();view("login")};
+$("bk").onclick=function(e){e.preventDefault();view("login")};
+
+$("lb").onclick=async function(){
+  var n=$("lu").value.trim().toLowerCase(),a=u.users[n];
+  if(!a||a.h!==await H($("lp").value))return msg("lm","Utilizador ou senha errados.",1);
+  var m=a.role==="admin"?"admin":"cliente";
+  if(m!==mode)return msg("lm",m==="admin"?"Esta é uma conta de administrador. Volta ao início e escolhe Admin.":"Esta é uma conta de cliente. Volta ao início e escolhe Clientes.",1);
+  cur=n;lw(S,JSON.stringify({n:n,m:m}));$("lp").value="";msg("lm","");view(m==="admin"?"admin":"app");
+};
+$("lp").onkeydown=function(e){if(e.key==="Enter")$("lb").click()};
+$("rb").onclick=async function(){
+  var n=$("ru").value.trim().toLowerCase(),p=$("rp").value;
+  if(!/^[a-z0-9._-]{2,30}$/.test(n))return msg("rm","Utilizador inválido (letras, números, . _ -).",1);
+  if(u.users[n])return msg("rm","Esse utilizador já existe.",1);
+  if(p.length<4)return msg("rm","A senha precisa de 4 ou mais caracteres.",1);
+  u.users[n]={h:await H(p),role:"cliente"};saveU();
+  $("ru").value="";$("rp").value="";$("lu").value=n;view("login");msg("lm","Conta criada. Já podes entrar.");
+};
+$("fb").onclick=async function(){
+  var n=$("fu").value.trim().toLowerCase(),a=u.users[n];
+  if(!a||(a.role==="admin")!==(mode==="admin"))return msg("fm","Utilizador não existe nesta área.",1);
+  if(await H($("fc").value)!==u.rec)return msg("fm","Código de recuperação errado.",1);
+  if($("fn").value.length<4)return msg("fm","A nova senha precisa de 4 ou mais caracteres.",1);
+  a.h=await H($("fn").value);saveU();$("fc").value="";$("fn").value="";msg("fm","Senha alterada. Já podes entrar.");
+};
+function logout(){try{localStorage.removeItem(S)}catch(e){}cur=null;mode=null;view("home")}
+$("out").onclick=logout;$("aout").onclick=logout;
+$("adm").onclick=function(){if(isAdmin())view("admin")};
+$("toapp").onclick=function(){view("app")};
+
+/* ---------- Dispositivos ---------- */
+function copy(t,id){
+  function ok(){msg(id||"am","Copiado.")}
+  try{navigator.clipboard.writeText(t).then(ok,function(){fb()})}catch(e){fb()}
+  function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){msg(id||"am","Não foi possível copiar.",1)}a.remove()}
+}
+function mine(){return devs().map(function(d,i){return{d:d,i:i}}).filter(function(x){return isAdmin()||x.d.dono===cur})}
+function renderApp(){
+  var ad=isAdmin(),m=mine(),f=$("q").value.toLowerCase(),tp={},h="";
+  $("who").textContent=(ad?"Admin: ":"Cliente: ")+cur;
+  $("ht").textContent=ad?"Dispositivos (todos)":"Os meus dispositivos";
+  $("adm").hidden=!ad;
+  m.forEach(function(x){tp[x.d.tipo]=(tp[x.d.tipo]||0)+1});
+  var st='<div class="stat"><b>'+m.length+'</b><span>Dispositivos</span></div>';
+  Object.keys(tp).forEach(function(k){st+='<div class="stat"><b>'+tp[k]+'</b><span>'+esc(k)+'</span></div>'});
+  if(ad)st+='<div class="stat"><b>'+Object.keys(u.users).filter(function(n){return u.users[n].role!=="admin"}).length+'</b><span>Clientes</span></div>';
+  $("stats").innerHTML=st;
+  m.forEach(function(x){
+    var d=x.d,i=x.i,ip=esc(d.ip);
+    if(f&&(d.nome+" "+d.ip).toLowerCase().indexOf(f)<0)return;
+    h+='<tr><td><b>'+esc(d.nome)+'</b>'+(d.user?'<br><span class="mut">'+esc(d.user)+'</span>':'')+'</td><td class="ip">'+ip+'</td><td>'+esc(d.tipo)+'</td><td><div class="acts">'+
+    '<button class="p" data-rdp="'+i+'">Controlo total</button><button data-bat="'+i+'">Ajuda remota</button>'+
+    '<a href="vnc://'+ip+'">VNC</a><a href="ssh://'+ip+'">SSH</a><a target="_blank" rel="noopener" href="http://'+ip+'">Web</a>'+
+    '<button data-c="ping '+ip+'">Ping</button><button data-ia="'+i+'">IA</button></div></td></tr>';
+  });
+  $("lista").innerHTML=h||'<tr><td colspan="4" class="mut" style="text-align:center">Sem dispositivos atribuídos. O administrador pode atribuí-los à tua conta.</td></tr>';
+}
+$("q").oninput=renderApp;
+var fxName="",fxExt="";
+function showFx(title,name,ext,txt){fxName=name;fxExt=ext;$("fxt").textContent=title;$("fxa").value=txt;$("fx").hidden=false;$("fx").scrollIntoView({behavior:"smooth",block:"nearest"})}
+$("fxx").onclick=function(){$("fx").hidden=true};
+$("fxc").onclick=function(){copy($("fxa").value,"am")};
+$("fxs").onclick=async function(){
+  try{var dl=await claude.use("downloads");if(!dl)return msg("am","Guardar não está disponível aqui. Usa Copiar.",1);
+    await dl.save({filename:fxName+fxExt+".txt",data:$("fxa").value});msg("am","Guardado. Muda a extensão para "+fxExt+".")}
+  catch(e){if(!e||e.code!=="declined")msg("am","Não foi possível guardar. Usa Copiar.",1)}
+};
+$("lista").onclick=function(e){
+  var t=e.target;
+  if(t.dataset.c)return copy(t.dataset.c);
+  var i=t.dataset.rdp!==undefined?t.dataset.rdp:t.dataset.bat!==undefined?t.dataset.bat:t.dataset.ia;
+  if(i===undefined)return;
+  var d=devs()[+i];if(!d)return;
+  var nm=d.nome.replace(/[^\w-]+/g,"_")||"dispositivo";
+  if(t.dataset.rdp!==undefined){
+    var L=["screen mode id:i:2","use multimon:i:0","desktopwidth:i:1024","desktopheight:i:768","session bpp:i:32","compression:i:1","keyboardhook:i:2","audiocapturemode:i:1","videoplaybackmode:i:1","connection type:i:7","networkautodetect:i:1","bandwidthautodetect:i:1","displayconnectionbar:i:1","enableworkspacereconnect:i:0","disable wallpaper:i:0","allow font smoothing:i:1","allow desktop composition:i:1","bitmapcachepersistenable:i:1","full address:s:"+d.ip,"audiomode:i:0","redirectprinters:i:1","redirectclipboard:i:1","redirectdrives:i:1","drivestoredirect:s:*","redirectcomports:i:1","redirectsmartcards:i:1","redirectwebauthn:i:1","devicestoredirect:s:*","usbdevicestoredirect:s:*","camerastoredirect:s:*","autoreconnection enabled:i:1","authentication level:i:2","prompt for credentials:i:1","negotiate security layer:i:1","remoteapplicationmode:i:0"];
+    if(d.user)L.splice(18,0,"username:s:"+d.user);
+    showFx("Controlo total: "+d.nome+" (grava como "+nm+".rdp)",nm,".rdp",L.join("\r\n")+"\r\n");
+  }else if(t.dataset.bat!==undefined){
+    showFx("Ajuda remota: "+d.nome+" (grava como Ajuda_"+nm+".bat)","Ajuda_"+nm,".bat","@echo off\r\nset HOST="+d.ip+"\r\necho Sessoes ativas em %HOST%:\r\necho.\r\nquery session /server:%HOST%\r\necho.\r\nset /p ID=Escreve o numero da sessao (coluna ID) e prime Enter: \r\nmstsc /v:%HOST% /shadow:%ID% /control /noconsentprompt\r\npause\r\n");
+  }else{
+    ask("Faz um diagnóstico de ligação ao dispositivo “"+d.nome+"” ("+d.tipo+", "+d.ip+"). Diz-me que testes fazer, por ordem, e que erros são mais prováveis.");
+  }
+};
+
+/* ---------- Assistente IA ---------- */
+var busy=false;
+async function ask(q){
+  q=(q||"").trim();if(!q||busy)return;
+  var box=$("ians");box.className="";box.textContent="A pensar...";$("ia").scrollIntoView({behavior:"smooth",block:"nearest"});
+  var sample=null;try{sample=await claude.use("sample")}catch(e){}
+  if(!sample){box.className="mut";box.textContent="O assistente IA só está disponível quando esta página é aberta no Claude.";return}
+  busy=true;$("ib").disabled=true;
+  var ctx=mine().map(function(x){return{nome:x.d.nome,ip:x.d.ip,tipo:x.d.tipo,utilizador:x.d.user||null}});
+  var p="És o assistente do site Filipe Remoto, que gere ligações remotas a PCs Windows, Linux e routers (RDP, ajuda remota shadow, VNC, SSH, ping). Responde em português de Portugal, curto e prático, com comandos exatos (mstsc, query session, ssh, ipconfig) e passos numerados. Não inventes IPs nem dados. Perfil do utilizador: "+(isAdmin()?"administrador":"cliente")+". Dispositivos visíveis: "+JSON.stringify(ctx)+"\n\nPergunta: "+q;
+  try{await sample(p,{cache:false,onText:function(u){box.textContent=u.text}})}
+  catch(e){box.className="mut";box.textContent=(e&&e.code==="rate_limited")?"Muitos pedidos seguidos. Espera um pouco.":(e&&e.code==="not_granted")?"Sem permissão para usar o assistente IA.":"Não foi possível obter resposta.";}
+  busy=false;$("ib").disabled=false;
+}
+$("ib").onclick=function(){ask($("iq").value)};
+$("iq").onkeydown=function(e){if(e.key==="Enter")$("ib").click()};
+$("chips").onclick=function(e){var q=e.target.dataset.q;if(q){$("iq").value=q;ask(q)}};
+
+/* ---------- Painel admin ---------- */
+var dv=[];
+function renderAdmin(){
+  dv=devs();$("awho").textContent="Admin: "+cur;
+  var sel=$("dono"),cv=sel.value;
+  sel.innerHTML='<option value="">Sem cliente</option>'+Object.keys(u.users).filter(function(n){return u.users[n].role!=="admin"}).map(function(n){return '<option>'+esc(n)+'</option>'}).join("");sel.value=cv;
+  $("alista").innerHTML=dv.map(function(d,i){return '<tr><td><b>'+esc(d.nome)+'</b></td><td class="ip">'+esc(d.ip)+'</td><td>'+esc(d.tipo)+'</td><td>'+esc(d.user||"")+'</td><td>'+esc(d.dono||"")+'</td><td><button data-d="'+i+'">Remover</button></td></tr>'}).join("")||'<tr><td colspan="6" class="mut">Sem dispositivos.</td></tr>';
+  $("users").innerHTML=Object.keys(u.users).map(function(n){var a=u.users[n];return '<tr><td><b>'+esc(n)+'</b></td><td>'+(a.role==="admin"?"Administrador":"Cliente")+'</td><td>'+(a.role==="admin"?"":'<button data-r="'+esc(n)+'">Repor senha</button> <button data-u="'+esc(n)+'">Remover</button>')+'</td></tr>'}).join("");
+}
+$("add").onclick=function(){
+  var n=$("nome").value.trim(),ip=$("ip").value.trim().replace(/^\\\\|^https?:\/\//i,"").replace(/[\/:].*$/,"");
+  if(!n)return msg("dm","Indica um nome.",1);
+  if(!okHost(ip))return msg("dm","IP ou nome de computador inválido.",1);
+  var o={nome:n,ip:ip,tipo:$("tipo").value},us=$("user").value.trim(),dn=$("dono").value;if(us)o.user=us;if(dn)o.dono=dn;
+  dv=devs();dv.push(o);saveD(dv);["nome","ip","user"].forEach(function(k){$(k).value=""});renderAdmin();msg("dm","Dispositivo adicionado.");
+};
+$("alista").onclick=function(e){var i=e.target.dataset.d;if(i!==undefined){dv=devs();dv.splice(+i,1);saveD(dv);renderAdmin()}};
+$("addu").onclick=async function(){
+  var n=$("nu").value.trim().toLowerCase(),p=$("np").value;
+  if(!/^[a-z0-9._-]{2,30}$/.test(n))return msg("um","Utilizador inválido (letras, números, . _ -).",1);
+  if(u.users[n])return msg("um","Esse utilizador já existe.",1);
+  if(p.length<4)return msg("um","A senha precisa de 4 ou mais caracteres.",1);
+  u.users[n]={h:await H(p),role:"cliente"};saveU();$("nu").value="";$("np").value="";renderAdmin();msg("um","Cliente criado.");
+};
+$("users").onclick=async function(e){
+  var t=e.target,n=t.dataset.u,rs=t.dataset.r;
+  if(n){delete u.users[n];saveU();dv=devs();dv.forEach(function(d){if(d.dono===n)delete d.dono});saveD(dv);renderAdmin();msg("um","Cliente removido.")}
+  else if(rs){var p=prompt("Nova senha para "+rs+" (mín. 4 caracteres):");if(p===null)return;if(p.length<4)return msg("um","A senha precisa de 4 ou mais caracteres.",1);u.users[rs].h=await H(p);saveU();msg("um","Senha de "+rs+" reposta.")}
+};
+$("bps").onclick=async function(){var p=$("ps").value;if(p.length<4)return msg("sm","A senha precisa de 4 ou mais caracteres.",1);u.users[cur].h=await H(p);saveU();$("ps").value="";msg("sm","Senha do admin alterada.")};
+$("brc").onclick=async function(){var c=$("rc").value;if(c.length<4)return msg("sm","O código precisa de 4 ou mais caracteres.",1);u.rec=await H(c);saveU();$("rc").value="";msg("sm","Código de recuperação alterado.")};
+})();
+</script>
+</body>
+</html>
