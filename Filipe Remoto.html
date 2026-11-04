@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Filipe Remoto</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mut:#667085;--bd:#e3e6ea;--ac:#2563eb;--ac2:#0f766e}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1f26;--tx:#e8ebef;--mut:#98a2b3;--bd:#2b323b;--ac:#60a5fa;--ac2:#2dd4bf;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:20px}
+.box{width:100%;max-width:520px;text-align:center}
+h1{font-size:1.8rem;margin:0 0 6px}
+p{color:var(--mut);margin:0 0 26px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:420px){.btns{grid-template-columns:1fr}}
+a{display:block;text-decoration:none;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:26px 14px;font-weight:600;font-size:1.1rem;transition:transform .12s,border-color .12s}
+a:hover{transform:translateY(-2px)}
+a small{display:block;color:var(--mut);font-weight:400;font-size:.85rem;margin-top:4px}
+a.adm:hover{border-color:var(--ac)}
+a.cli:hover{border-color:var(--ac2)}
+.ico{font-size:2rem;display:block;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Filipe Remoto</h1>
+  <p>Gestão e ligação remota a dispositivos. Escolhe a tua área.</p>
+  <div class="btns">
+    <a class="adm" href="admin.html"><span class="ico">🛠️</span>Admin<small>Gerir dispositivos e clientes</small></a>
+    <a class="cli" href="filiperemoto.html"><span class="ico">👤</span>Clientes<small>Aceder aos meus dispositivos</small></a>
+  </div>
+</div>
+</body>
+</html>
